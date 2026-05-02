@@ -1,0 +1,17 @@
+# Dependency directories
+node_modules/
+
+# Environment files with real keys
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+
+# Build output (not applicable, but for safety)
+dist/
+build/

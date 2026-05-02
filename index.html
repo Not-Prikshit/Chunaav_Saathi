@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chunaav Saathi — चुनाव साथी</title>
+  <meta name="description" content="Chunaav Saathi guides you through every step of India's election process — voter registration, EVM, NOTA, MCC and more. Available in 22 Indian languages." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Google Translate (hidden) -->
+  <div id="google_translate_element" style="display:none;position:absolute;"></div>
+
+  <!-- Removed journey topbar -->  <!-- ══════════ STICKY NAV ══════════ -->
+  <nav id="main-nav">
+    <div class="brand" aria-label="Chunaav Saathi">
+      <span class="brand-hindi"></span>
+      <span class="brand-english"></span>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-btn active" data-section="section-home" id="nav-home">Home</button>
+      <button class="nav-btn" data-section="section-flowchart" id="nav-flowchart">Flowchart</button>
+      <button class="nav-btn" data-section="section-steps" id="nav-steps">How to Vote</button>
+      <button class="nav-btn" data-section="section-evm" id="nav-evm">EVM Simulator</button>
+      <button class="nav-btn" data-section="section-chat" id="nav-chat">Ask AI</button>
+      <button class="nav-btn" data-section="section-eligibility" id="nav-eligibility">Eligibility</button>
+    </div>
+
+    <div class="nav-right">
+      <select id="lang-select" class="lang-select" onchange="doTranslate(this.value)" aria-label="Select language">
+        <option value="en">Language</option>
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="bn">বাংলা</option>
+        <option value="te">తెలుగు</option>
+        <option value="mr">मराठी</option>
+        <option value="ta">தமிழ்</option>
+        <option value="ur">اردو</option>
+        <option value="gu">ગુજરાતી</option>
+        <option value="kn">ಕನ್ನಡ</option>
+        <option value="or">ଓଡ଼ିଆ</option>
+        <option value="ml">മലയാളം</option>
+        <option value="pa">ਪੰਜਾਬੀ</option>
+        <option value="as">অসমীয়া</option>
+        <option value="mai">मैथिली</option>
+        <option value="sa">संस्कृतम्</option>
+        <option value="ks">کٲشُر</option>
+        <option value="ne">नेपाली</option>
+        <option value="sd">سنڌي</option>
+        <option value="kok">कोंकणी</option>
+        <option value="mni">মৈতৈলোন্</option>
+        <option value="brx">बर'</option>
+        <option value="doi">डोगरी</option>
+      </select>
+    </div>
+  </nav>
+
+  <!-- ══════════ SECTION 1: HOME ══════════ -->
+  <section id="section-home" class="active">
+    <div class="hero">
+      <div class="hero-brand">
+        <span class="hero-hindi">
+          <span>चु</span><span>ना</span><span>व</span>
+        </span>
+        <span class="hero-english">Saathi</span>
+      </div>
+      <p class="hero-sub">Understand India's election process step by step with the official guide for every citizen.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="navigateTo('section-flowchart')">Explore Flowchart</button>
+        <button class="btn-secondary" onclick="navigateTo('section-chat')">Ask AI Assistant</button>
+      </div>
+    </div>
+
+    <div class="section-inner">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-number">96.8 Crore</div>
+          <div class="stat-label">Registered Voters</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">543</div>
+          <div class="stat-label">Lok Sabha Constituencies</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">18 Years</div>
+          <div class="stat-label">Minimum Voting Age</div>
+        </div>
+      </div>
+
+      <div class="home-intro">
+        <p>Chunaav Saathi guides you through every step of India's election process — from checking your voter registration to understanding your EVM and casting your vote with confidence. No login required.</p>
+      </div>
+
+      <!-- Feature tiles -->
+      <div class="feature-tiles">
+        <div class="feature-tile" onclick="navigateTo('section-flowchart')">
+          <span class="tile-icon">Process</span>
+          <h3>Election Flowchart</h3>
+          <p>Voter & Candidate paths from start to result</p>
+        </div>
+        <div class="feature-tile" onclick="navigateTo('section-steps')">
+          <span class="tile-icon">Vote</span>
+          <h3>How to Vote</h3>
+          <p>6-step guide with EVM & NOTA explained</p>
+        </div>
+        <div class="feature-tile" onclick="navigateTo('section-eligibility')">
+          <span class="tile-icon">Verify</span>
+          <h3>Check Eligibility</h3>
+          <p>Find out if you can vote in India</p>
+        </div>
+        <div class="feature-tile" onclick="navigateTo('section-quiz')">
+          <span class="tile-icon">Learn</span>
+          <h3>Take the Quiz</h3>
+          <p>Test your election knowledge</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ SECTION 2: FLOWCHART ══════════ -->
+  <section id="section-flowchart">
+    <div class="section-inner" style="max-width: 1000px;">
+      <h1 class="section-heading">Election Process Flowchart</h1>
+      <p class="section-sub">Follow the path from announcement to results. Choose your path as a Voter or a Candidate.</p>
+      
+      <div id="flowchart-container" class="flowchart-container">
+        <!-- Rendered by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SECTION 3: HOW TO VOTE ══════════ -->
+  <section id="section-steps">
+    <div class="section-inner">
+      <h1 class="section-heading">How to Vote in India</h1>
+      <p class="section-sub">6 steps every voter should know</p>
+
+      <div class="steps-grid">
+
+        <div class="step-card">
+          <div class="step-badge">1</div>
+          <div class="step-body">
+            <h3>Check Your Voter Registration</h3>
+            <p>Visit <a href="https://voterportal.eci.gov.in" target="_blank" rel="noopener">voterportal.eci.gov.in</a> or the Voter Helpline App. Search by EPIC number or name and address. Not registered? Fill Form 6 online. Registration closes 7 days before the notification date.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">2</div>
+          <div class="step-body">
+            <h3>Know Your Constituency</h3>
+            <p>India has 543 Lok Sabha constituencies, each electing one MP. Find yours on the ECI portal using your address. Some seats are reserved for SC or ST candidates only.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">3</div>
+          <div class="step-body">
+            <h3>Get Your EPIC Card</h3>
+            <p>EPIC (Elector's Photo Identity Card) is your official voter ID from ECI. Apply at voterportal.eci.gov.in or at your local BLO office. Lost it? You can still vote with any ONE of 12 approved documents: Aadhaar, PAN, Passport, Driving Licence, MNREGA Job Card, Bank Passbook with photo, Health Insurance Smart Card, Pension document with photo, NPR Smart Card, Service ID, Official photo ID by PSU, or Smart Card by RGI.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">4</div>
+          <div class="step-body">
+            <h3>Find Your Polling Booth</h3>
+            <p>Your booth address is on your voter slip (delivered before election day). Also findable on ECI portal using your EPIC number. Booths are typically within 2 km of your address. Voter slip is NOT mandatory — your name on the roll is sufficient.</p>
+          </div>
+        </div>
+
+        <div class="step-card step-card--image">
+          <div class="step-badge">5</div>
+          <div class="step-body">
+            <h3>Cast Your Vote on the EVM</h3>
+            <p>Show your ID to the polling officer. They mark the register and apply ink to your left index finger. Press the blue button next to your candidate on the EVM. It beeps once. The VVPAT shows a paper slip for 7 seconds.</p>
+            <div class="step-images">
+              <img src="pngs/chunaav_01.jfif" alt="Ink mark on voter's finger after voting" class="step-img" />
+              <img src="pngs/chunaav_02.jfif" alt="Electronic Voting Machine (EVM)" class="step-img" />
+            </div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">6</div>
+          <div class="step-body">
+            <h3>Understand NOTA</h3>
+            <p>NOTA (None of the Above) is the last option on every EVM (button 99AA). Introduced by Supreme Court order in 2013. Choosing NOTA means you reject all candidates. Even if NOTA gets the most votes, the candidate with the next highest votes still wins.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SECTION: EVM SIMULATOR ══════════ -->
+  <section id="section-evm">
+    <div class="section-inner">
+      <h1 class="section-heading">EVM Simulator</h1>
+      <p class="section-sub">Experience how a real Indian Electronic Voting Machine works. Follow the steps from the Control Unit to the VVPAT confirmation.</p>
+
+      <div class="evm-layout">
+        <!-- Control Unit (CU) -->
+        <div class="evm-unit cu-unit">
+          <div class="unit-header">Control Unit</div>
+          <div class="cu-display">
+            <div id="cu-status" class="cu-status-text">SYSTEM READY</div>
+            <div class="cu-leds">
+              <div class="led led-on" id="led-busy"><span>BUSY</span></div>
+              <div class="led" id="led-ready"><span>READY</span></div>
+            </div>
+          </div>
+          <div class="cu-controls">
+            <button class="cu-btn" id="cu-ballot-btn" onclick="activateBallot()">BALLOT</button>
+            <div class="cu-label">Polling Officer's Console</div>
+          </div>
+        </div>
+
+        <!-- Balloting Unit (BU) -->
+        <div class="evm-unit bu-unit">
+          <div class="unit-header">Balloting Unit</div>
+          <div class="bu-candidates" id="bu-candidates-list">
+            <!-- Rendered by evm.js -->
+          </div>
+          <div class="bu-footer">ECI - Electronic Voting Machine</div>
+        </div>
+
+        <!-- VVPAT Unit -->
+        <div class="evm-unit vvpat-unit">
+          <div class="unit-header">VVPAT Unit</div>
+          <div class="vvpat-window">
+            <div class="vvpat-viewport">
+              <div id="vvpat-slip" class="vvpat-slip">
+                <div class="slip-content">
+                  <div id="vvpat-symbol" class="slip-symbol"></div>
+                  <div id="vvpat-name" class="slip-name"></div>
+                  <div class="slip-num" id="vvpat-num"></div>
+                </div>
+              </div>
+            </div>
+            <div class="vvpat-glass"></div>
+          </div>
+          <div class="vvpat-label">Voter Verifiable Paper Audit Trail</div>
+        </div>
+      </div>
+
+      <div class="evm-guide">
+        <h3>How to use this simulator:</h3>
+        <ol>
+          <li><strong>Control Unit:</strong> Click the "BALLOT" button. This simulates the Polling Officer enabling the machine for you.</li>
+          <li><strong>Balloting Unit:</strong> The "READY" light will turn green. Press the blue button next to your chosen candidate.</li>
+          <li><strong>Confirmation:</strong> You will hear a long beep. The "BUSY" light will turn red.</li>
+          <li><strong>VVPAT:</strong> Look at the VVPAT window. Your selected candidate's slip will appear for 7 seconds before dropping.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SECTION 5: ASK AI ══════════ -->
+  <section id="section-chat">
+    <div class="section-inner">
+      <h1 class="section-heading">Ask Chunaav Saathi</h1>
+      <p class="section-sub">Click a question below to get an instant answer</p>
+
+      <div class="chat-questions-grid" id="chat-questions-grid">
+        <!-- Rendered by app.js -->
+      </div>
+
+      <div class="chat-answer-area" id="chat-answer-area" style="display:none;">
+        <div class="chat-answer-header">
+          <span class="chat-answer-badge">Answer</span>
+          <button class="chat-clear-btn" onclick="clearChatAnswer()">← Ask another</button>
+        </div>
+        <div class="chat-answer-body" id="chat-answer-body"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SECTION 6: ELIGIBILITY ══════════ -->
+  <section id="section-eligibility">
+    <div class="section-inner">
+      <h1 class="section-heading">Check Your Eligibility</h1>
+      <p class="section-sub">Find out if you are eligible to vote in India's Lok Sabha elections</p>
+
+      <div class="elig-card">
+        <!-- Left Side: Form and Info -->
+        <div>
+          <div class="elig-form">
+            <div class="elig-field">
+              <label for="elig-age">Your Age</label>
+              <input type="number" id="elig-age" min="1" max="120" placeholder="e.g. 22" />
+            </div>
+
+            <div class="elig-field">
+              <label for="elig-citizen">Citizenship</label>
+              <select id="elig-citizen">
+                <option value="">Select citizenship</option>
+                <option value="india">Indian Citizen</option>
+                <option value="other">Not an Indian Citizen</option>
+              </select>
+            </div>
+
+            <button class="elig-btn" onclick="checkEligibility()" id="elig-check-btn">Check Eligibility</button>
+          </div>
+
+          <div id="elig-result" class="elig-result" style="display:none;"></div>
+
+          <div class="elig-info" style="margin-top: 2rem;">
+            <h3>Eligibility Criteria</h3>
+            <ul>
+              <li>Must be a citizen of India</li>
+              <li>Must be 18 years of age or above</li>
+              <li>Must be enrolled in the electoral roll</li>
+              <li>Not disqualified under any law</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right Side: Cartoon Image -->
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <img src="pngs/cartoon_voter_id.png" alt="Cartoon Indian Voter ID Card" style="max-width: 100%; max-height: 400px; border: 4px solid #1A1A1A; border-radius: 4px 15px 5px 25px / 15px 5px 25px 4px; box-shadow: 6px 6px 0px 0px rgba(26,26,26,1); transform: rotate(-2deg);" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Removed Journey Sections -->
+
+  <!-- ══════════ TIMELINE MODAL ══════════ -->
+  <div class="modal-overlay" id="modal-overlay" onclick="handleModalOverlayClick(event)">
+    <div class="modal-card" id="modal-card" role="dialog" aria-modal="true">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+
+      <div class="modal-header">
+        <div class="modal-icon" id="modal-icon"></div>
+        <div>
+          <div class="modal-step-num" id="modal-step-num"></div>
+          <h2 class="modal-title" id="modal-title"></h2>
+        </div>
+      </div>
+
+      <div class="modal-tabs">
+        <button class="modal-tab active" data-tab="detail" onclick="switchModalTab('detail', this)">Details</button>
+        <button class="modal-tab" data-tab="why" onclick="switchModalTab('why', this)">Why It Matters</button>
+        <button class="modal-tab" data-tab="example" onclick="switchModalTab('example', this)">Real Example</button>
+        <button class="modal-tab" data-tab="violated" onclick="switchModalTab('violated', this)">If Violated</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-panel active" id="panel-detail"></div>
+        <div class="modal-panel" id="panel-why"></div>
+        <div class="modal-panel" id="panel-example"></div>
+        <div class="modal-panel" id="panel-violated"></div>
+      </div>
+
+      <div class="modal-simple-wrap">
+        <button class="modal-simple-btn" id="simple-btn" onclick="toggleSimpleTerms()">Explain in Simple Terms</button>
+        <div class="modal-simple-body" id="modal-simple-body" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Removed Journey floating bar -->
+
+  <!-- ══════════ FLOATING AI CHATBOT ══════════ -->
+  <button class="chatbot-fab" id="chatbot-fab" onclick="toggleChatbot()" aria-label="Open AI Chatbot">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+  </button>
+
+  <div class="chatbot-window" id="chatbot-window">
+    <div class="chatbot-header">
+      <div class="chatbot-header-info">
+        <span class="chatbot-avatar">Bot</span>
+        <div>
+          <strong>Chunaav Saathi AI</strong>
+          <span class="chatbot-status">Powered by Gemini</span>
+        </div>
+      </div>
+      <button class="chatbot-close" onclick="toggleChatbot()" aria-label="Close chatbot">✕</button>
+    </div>
+    <div class="chatbot-messages" id="chatbot-messages">
+      <div class="chatbot-msg bot">
+        <span class="chatbot-msg-avatar">Bot</span>
+        <div class="chatbot-msg-bubble">Namaste! I'm your Chunaav Saathi AI assistant. Ask me anything about Indian elections.</div>
+      </div>
+    </div>
+    <div class="chatbot-input-area">
+      <button class="chatbot-voice-btn" id="chatbot-voice-btn" onclick="toggleVoiceInput()" aria-label="Voice input">🎙️</button>
+      <input type="text" class="chatbot-input" id="chatbot-input" placeholder="Ask about elections..." autocomplete="off"
+             onkeydown="if(event.key==='Enter')sendChatbotMsg()" />
+      <button class="chatbot-send-btn" onclick="sendChatbotMsg()" aria-label="Send message">➤</button>
+    </div>
+  </div>
+
+
+  <!-- ══════════ SCRIPTS ══════════ -->
+  <script src="js/data.js"></script>
+  <script src="js/evm_data.js"></script>
+  <script src="js/evm.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'hi,bn,te,mr,ta,ur,gu,kn,or,ml,pa,as,mai,sa,ks,ne,sd,kok,mni,brx,doi',
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+
+</body>
+</html>
