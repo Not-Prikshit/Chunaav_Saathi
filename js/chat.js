@@ -6,7 +6,8 @@
  * @returns {Promise<string>} The API's response or an error message.
  */
 async function askGemini(userMessage) {
-  const BACKEND_URL = `http://localhost:3001/api/chat`;
+  // Use relative path so it works both locally and on the deployed server
+  const BACKEND_URL = `/api/chat`;
 
   try {
     const response = await fetch(BACKEND_URL, {

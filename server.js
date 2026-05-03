@@ -24,7 +24,7 @@ app.post('/api/chat', async (req, res) => {
     return res.status(400).json({ error: "Message is required" });
   }
 
-  const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+  const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
   try {
     const response = await fetch(GEMINI_URL, {
