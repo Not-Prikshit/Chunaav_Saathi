@@ -3,6 +3,7 @@ node_modules/
 
 # Environment files with real keys
 .env
+app.yaml
 
 # OS files
 .DS_Store

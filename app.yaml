@@ -1,4 +1,0 @@
-runtime: nodejs22
-env_variables:
-  GEMINI_API_KEY: "AIzaSyBmDXptqN4aSZLV6j2jxrIFEFK-13G-sZg"
-  PORT: "8080"
