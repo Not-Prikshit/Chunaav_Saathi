@@ -18,13 +18,46 @@
   <!-- Google Translate (hidden) -->
   <div id="google_translate_element" style="display:none;position:absolute;"></div>
 
-  <!-- Removed journey topbar -->  <!-- ══════════ STICKY NAV ══════════ -->
+  <!-- ══════════ STICKY NAV ══════════ -->
   <nav id="main-nav">
-    <div class="brand nav-brand-cartoon" aria-label="Chunaav Saathi" onclick="navigateTo('section-home')" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
-      <span class="nav-hindi-3d">
-        <span class="nh-1">चु</span><span class="nh-2">ना</span><span class="nh-3">व</span>
-      </span>
-      <span class="nav-english-3d">SAATHI</span>
+    <div class="nav-header-row">
+      <div class="brand nav-brand-cartoon" aria-label="Chunaav Saathi" onclick="navigateTo('section-home')" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+        <span class="nav-hindi-3d">
+          <span class="nh-1">चु</span><span class="nh-2">ना</span><span class="nh-3">व</span>
+        </span>
+        <span class="nav-english-3d">SAATHI</span>
+      </div>
+
+      <div class="nav-right">
+        <div class="translate-wrapper">
+          <span class="translate-icon">🌐</span>
+          <select id="lang-select" class="lang-select" onchange="doTranslate(this.value)" aria-label="Select language">
+            <option value="en">Translate</option>
+            <option value="en">English</option>
+            <option value="hi">हिंदी (Hindi)</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="mr">मराठी (Marathi)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="ur">اردو (Urdu)</option>
+            <option value="gu">ગુજરાતી (Gujarati)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="or">ଓଡ଼ିଆ (Odia)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            <option value="as">অসমীয়া (Assamese)</option>
+            <option value="mai">मैथिली (Maithili)</option>
+            <option value="sa">संस्कृतम् (Sanskrit)</option>
+            <option value="ks">کٲशُر (Kashmiri)</option>
+            <option value="ne">नेपाली (Nepali)</option>
+            <option value="sd">سنڌي (Sindhi)</option>
+            <option value="kok">कोंकणी (Konkani)</option>
+            <option value="mni">মৈতৈলোন্ (Manipuri)</option>
+            <option value="brx">बर' (Bodo)</option>
+            <option value="doi">डोगरी (Dogri)</option>
+          </select>
+        </div>
+      </div>
     </div>
 
     <div class="nav-tabs">
@@ -34,34 +67,6 @@
       <button class="nav-btn" data-section="section-evm" id="nav-evm">EVM Simulator</button>
       <button class="nav-btn" data-section="section-chat" id="nav-chat">Ask AI</button>
       <button class="nav-btn" data-section="section-eligibility" id="nav-eligibility">Eligibility</button>
-    </div>
-
-    <div class="nav-right">
-      <select id="lang-select" class="lang-select" onchange="doTranslate(this.value)" aria-label="Select language">
-        <option value="en">Language</option>
-        <option value="en">English</option>
-        <option value="hi">हिंदी</option>
-        <option value="bn">বাংলা</option>
-        <option value="te">తెలుగు</option>
-        <option value="mr">मराठी</option>
-        <option value="ta">தமிழ்</option>
-        <option value="ur">اردو</option>
-        <option value="gu">ગુજરાતી</option>
-        <option value="kn">ಕನ್ನಡ</option>
-        <option value="or">ଓଡ଼ିଆ</option>
-        <option value="ml">മലയാളം</option>
-        <option value="pa">ਪੰਜਾਬੀ</option>
-        <option value="as">অসমীয়া</option>
-        <option value="mai">मैथिली</option>
-        <option value="sa">संस्कृतम्</option>
-        <option value="ks">کٲشُر</option>
-        <option value="ne">नेपाली</option>
-        <option value="sd">سنڌي</option>
-        <option value="kok">कोंकणी</option>
-        <option value="mni">মৈতৈলোন্</option>
-        <option value="brx">बर'</option>
-        <option value="doi">डोगरी</option>
-      </select>
     </div>
   </nav>
 
@@ -176,8 +181,6 @@
           </a>
         </div>
       </div>
-
-
     </div>
   </section>
 
@@ -200,7 +203,6 @@
       <p class="section-sub">6 steps every voter should know</p>
 
       <div class="steps-grid">
-
         <div class="step-card">
           <div class="step-badge">1</div>
           <div class="step-body">
@@ -252,7 +254,6 @@
             <p>NOTA (None of the Above) is the last option on every EVM (button 99AA). Introduced by Supreme Court order in 2013. Choosing NOTA means you reject all candidates. Even if NOTA gets the most votes, the candidate with the next highest votes still wins.</p>
           </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -347,7 +348,6 @@
       <p class="section-sub">Find out if you are eligible to vote in India's Lok Sabha elections</p>
 
       <div class="elig-card">
-        <!-- Left Side: Form and Info -->
         <div>
           <div class="elig-form">
             <div class="elig-field">
@@ -380,16 +380,12 @@
           </div>
         </div>
 
-        <!-- Right Side: Cartoon Image -->
         <div style="display: flex; justify-content: center; align-items: center;">
           <img src="pngs/cartoon_voter_id.png" alt="Cartoon Indian Voter ID Card" style="max-width: 100%; max-height: 400px; border: 4px solid #1A1A1A; border-radius: 4px 15px 5px 25px / 15px 5px 25px 4px; box-shadow: 6px 6px 0px 0px rgba(26,26,26,1); transform: rotate(-2deg);" />
         </div>
       </div>
-
     </div>
   </section>
-
-  <!-- Removed Journey Sections -->
 
   <!-- ══════════ TIMELINE MODAL ══════════ -->
   <div class="modal-overlay" id="modal-overlay" onclick="handleModalOverlayClick(event)">
@@ -427,8 +423,6 @@
     </div>
   </div>
 
-  <!-- Removed Journey floating bar -->
-
   <!-- ══════════ FLOATING AI CHATBOT ══════════ -->
   <button class="chatbot-fab" id="chatbot-fab" onclick="toggleChatbot()" aria-label="Open AI Chatbot">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
@@ -460,7 +454,6 @@
     </div>
   </div>
 
-
   <!-- ══════════ SCRIPTS ══════════ -->
   <script src="js/data.js"></script>
   <script src="js/evm_data.js"></script>
@@ -477,6 +470,5 @@
     }
   </script>
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-
 </body>
 </html>

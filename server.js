@@ -59,7 +59,10 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-// Serve frontend static files if accessed directly through server
+// Explicitly serve static directories
+app.use('/css', express.static('css'));
+app.use('/js', express.static('js'));
+app.use('/pngs', express.static('pngs'));
 app.use(express.static('./'));
 
 app.listen(PORT, () => {
