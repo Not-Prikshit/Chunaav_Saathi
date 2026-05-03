@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EVM.JS — Logic for Electronic Voting Machine Simulator
  */

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Chunaav Saathi — चुनाव साथी</title>
   <meta name="description" content="Chunaav Saathi guides you through every step of India's election process — voter registration, EVM, NOTA, MCC and more. Available in 22 Indian languages." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,9 +20,11 @@
 
   <!-- Removed journey topbar -->  <!-- ══════════ STICKY NAV ══════════ -->
   <nav id="main-nav">
-    <div class="brand" aria-label="Chunaav Saathi">
-      <span class="brand-hindi"></span>
-      <span class="brand-english"></span>
+    <div class="brand nav-brand-cartoon" aria-label="Chunaav Saathi" onclick="navigateTo('section-home')" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+      <span class="nav-hindi-3d">
+        <span class="nh-1">चु</span><span class="nh-2">ना</span><span class="nh-3">व</span>
+      </span>
+      <span class="nav-english-3d">SAATHI</span>
     </div>
 
     <div class="nav-tabs">
@@ -115,12 +118,65 @@
           <h3>Check Eligibility</h3>
           <p>Find out if you can vote in India</p>
         </div>
-        <div class="feature-tile" onclick="navigateTo('section-quiz')">
-          <span class="tile-icon">Learn</span>
-          <h3>Take the Quiz</h3>
-          <p>Test your election knowledge</p>
+      </div>
+
+      <!-- Polling Booth Search -->
+      <div class="booth-search-section">
+        <div class="booth-search-card">
+          <h2>📍 Find Your Polling Booth</h2>
+          <p>Locate your designated voting center using your Voter ID (EPIC).</p>
+          <div class="booth-search-form">
+            <input type="text" id="epic-input" placeholder="Enter EPIC No. (e.g., ABC1234567)" class="booth-input">
+            <button class="btn-primary" onclick="searchBooth()">Search ↗</button>
+          </div>
         </div>
       </div>
+
+      <!-- Quick Links -->
+      <div class="quick-links-section">
+        <h2 class="section-heading">Important Links</h2>
+        <p class="section-sub" style="margin-bottom:2.5rem;">Official resources every Indian voter should bookmark</p>
+
+        <div class="quick-links-grid">
+          <a href="https://voterportal.eci.gov.in" target="_blank" rel="noopener" class="quick-link-card">
+            <span class="ql-icon">🪪</span>
+            <strong>Voter Registration</strong>
+            <span class="ql-desc">Register or check your name on the voter list</span>
+            <span class="ql-url">voterportal.eci.gov.in</span>
+          </a>
+          <a href="https://eci.gov.in" target="_blank" rel="noopener" class="quick-link-card">
+            <span class="ql-icon">🏛️</span>
+            <strong>Election Commission</strong>
+            <span class="ql-desc">Official ECI website for schedules & results</span>
+            <span class="ql-url">eci.gov.in</span>
+          </a>
+          <a href="https://voters.eci.gov.in" target="_blank" rel="noopener" class="quick-link-card">
+            <span class="ql-icon">🔍</span>
+            <strong>Search Voter ID</strong>
+            <span class="ql-desc">Find your EPIC card details online</span>
+            <span class="ql-url">voters.eci.gov.in</span>
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=com.eci.citizen" target="_blank" rel="noopener" class="quick-link-card">
+            <span class="ql-icon">📱</span>
+            <strong>Voter Helpline App</strong>
+            <span class="ql-desc">Download the official app for Android</span>
+            <span class="ql-url">Google Play Store</span>
+          </a>
+          <a href="https://resultselection.eci.gov.in" target="_blank" rel="noopener" class="quick-link-card">
+            <span class="ql-icon">📊</span>
+            <strong>Election Results</strong>
+            <span class="ql-desc">Live and historical election results</span>
+            <span class="ql-url">resultselection.eci.gov.in</span>
+          </a>
+          <a href="tel:1950" class="quick-link-card">
+            <span class="ql-icon">📞</span>
+            <strong>Voter Helpline: 1950</strong>
+            <span class="ql-desc">Call for any voter-related queries</span>
+            <span class="ql-url">Toll Free</span>
+          </a>
+        </div>
+      </div>
+
 
     </div>
   </section>
@@ -353,6 +409,7 @@
         <button class="modal-tab" data-tab="why" onclick="switchModalTab('why', this)">Why It Matters</button>
         <button class="modal-tab" data-tab="example" onclick="switchModalTab('example', this)">Real Example</button>
         <button class="modal-tab" data-tab="violated" onclick="switchModalTab('violated', this)">If Violated</button>
+        <button class="modal-tab" data-tab="links" onclick="switchModalTab('links', this)">🔗 Links</button>
       </div>
 
       <div class="modal-body">
@@ -360,6 +417,7 @@
         <div class="modal-panel" id="panel-why"></div>
         <div class="modal-panel" id="panel-example"></div>
         <div class="modal-panel" id="panel-violated"></div>
+        <div class="modal-panel" id="panel-links"></div>
       </div>
 
       <div class="modal-simple-wrap">
@@ -379,7 +437,7 @@
   <div class="chatbot-window" id="chatbot-window">
     <div class="chatbot-header">
       <div class="chatbot-header-info">
-        <span class="chatbot-avatar">Bot</span>
+        <span class="chatbot-avatar">🤖</span>
         <div>
           <strong>Chunaav Saathi AI</strong>
           <span class="chatbot-status">Powered by Gemini</span>
@@ -387,9 +445,10 @@
       </div>
       <button class="chatbot-close" onclick="toggleChatbot()" aria-label="Close chatbot">✕</button>
     </div>
+
     <div class="chatbot-messages" id="chatbot-messages">
       <div class="chatbot-msg bot">
-        <span class="chatbot-msg-avatar">Bot</span>
+        <span class="chatbot-msg-avatar" style="font-size:1.8rem; line-height:1; display:flex; align-items:flex-end; padding-bottom:0.5rem;">🤖</span>
         <div class="chatbot-msg-bubble">Namaste! I'm your Chunaav Saathi AI assistant. Ask me anything about Indian elections.</div>
       </div>
     </div>

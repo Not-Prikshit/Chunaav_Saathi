@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EVM Data - Simplified to Options as per User Request
  */

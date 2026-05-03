@@ -1,3 +1,5 @@
+"use strict";
+
 /* ═══════════════════════════════════════
    APP.JS — Chunaav Saathi
    Tab switching | Timeline | Modal |
@@ -9,6 +11,8 @@
 let currentSection = 'section-home';
 let modalActiveIndex = -1;
 let simpleTermsOpen = false;
+let flowPath = 'none'; // 'none', 'voter', 'candidate'
+let flowStep = 0;
 let journeyActive = false;
 let journeyStep = 0; // 0-based index into timelineData
 
@@ -28,90 +32,138 @@ function navigateTo(id) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function searchBooth() {
+  const epic = document.getElementById('epic-input').value.trim();
+  if (epic) {
+    // Official ECI search portal link
+    window.open(`https://electoralsearch.eci.gov.in/`, '_blank');
+  } else {
+    alert("Please enter your EPIC (Voter ID) number first!");
+  }
+}
+
 document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => navigateTo(btn.dataset.section));
 });
 
 /* ══════════════════════════════════════
-   FLOWCHART — render
+   FLOWCHART — Interactive Game
 ══════════════════════════════════════ */
 function renderFlowchart() {
   const container = document.getElementById('flowchart-container');
   if (!container) return;
 
-  const html = `
-    <!-- Node 1: Start -->
-    <div class="flow-node" onclick="openModal(0)">
-      <div class="flow-icon">📢</div>
-      <div class="flow-title">1. Election Announcement</div>
-      <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:0.3rem;">ECI announces the schedule. MCC begins.</p>
-    </div>
-    
-    <div class="flow-vertical-line"></div>
-    
-    <!-- Branch Point -->
-    <div class="flow-branch-label">Choose your path</div>
-    
-    <div class="flow-branches">
-      <div class="flow-horizontal-line" style="width: calc(100% - 400px);"></div>
-      
-      <!-- VOTER PATH -->
+  if (flowPath === 'none') {
+    container.innerHTML = `
+      <div class="flow-node" onclick="openModal(0)">
+        <div class="flow-icon">📢</div>
+        <div class="flow-title">1. Election Announcement</div>
+        <p>The ECI announces dates. The journey begins!</p>
+      </div>
+      <div class="flow-vertical-line"></div>
       <div class="flow-branch">
-        <h3>Voter Path</h3>
-        <div class="flow-node" onclick="alert('Step: Check Eligibility. Must be 18+ and Indian Citizen.')">
-          <div class="flow-icon">Step 1</div>
-          <div class="flow-title">Check Eligibility</div>
-        </div>
-        <div class="flow-vertical-line"></div>
-        <div class="flow-node" onclick="alert('Step: Register. Fill Form 6 online.')">
-          <div class="flow-icon">Step 2</div>
-          <div class="flow-title">Register as Voter</div>
-        </div>
-        <div class="flow-vertical-line"></div>
-        <div class="flow-node" onclick="alert('Step: Find Booth. Check voter slip or ECI portal.')">
-          <div class="flow-icon">Step 3</div>
-          <div class="flow-title">Find Polling Booth</div>
+        <h3>Choose Your Path</h3>
+        <div style="display:flex; gap:1.5rem; margin-top:1.5rem; justify-content:center; flex-wrap:wrap;">
+          <button class="btn-primary" onclick="startFlowPath('voter')">I am a Voter</button>
+          <button class="btn-secondary" onclick="startFlowPath('candidate')">I am a Candidate</button>
         </div>
       </div>
-      
-      <!-- CANDIDATE PATH -->
-      <div class="flow-branch">
-        <h3>Candidate Path</h3>
-        <div class="flow-node" onclick="alert('Step: Check Eligibility. Must be 25+ and a registered voter.')">
-          <div class="flow-icon">Step 1</div>
-          <div class="flow-title">Eligibility to Contest</div>
-        </div>
-        <div class="flow-vertical-line"></div>
-        <div class="flow-node" onclick="alert('Step: File Nomination. Submit papers to Returning Officer.')">
-          <div class="flow-icon">Step 2</div>
-          <div class="flow-title">File Nomination</div>
-        </div>
-        <div class="flow-vertical-line"></div>
-        <div class="flow-node" onclick="alert('Step: Campaigning. Follow Model Code of Conduct.')">
-          <div class="flow-icon">Step 3</div>
-          <div class="flow-title">Campaign & MCC</div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="flow-vertical-line" style="height: 3rem;"></div>
-    
-    <!-- Merge Point: Silence Period -->
-    <div class="flow-node" onclick="openModal(7)">
-      <div class="flow-icon">Quiet</div>
-      <div class="flow-title">Silence Period</div>
-      <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:0.3rem;">Campaigning stops 48 hours before polling.</p>
-    </div>
-    
-    <div class="flow-vertical-line"></div>
-    
-    <!-- Polling & Results -->
-    <div class="flow-node" onclick="openModal(8)">
-      <div class="flow-icon">Voting</div>
-      <div class="flow-title">Polling Day & Results</div>
-      <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:0.3rem;">Votes are cast on EVMs and counted.</p>
-    </div>
+    `;
+  } else if (flowPath === 'voter') {
+    renderVoterPath(container);
+  } else if (flowPath === 'candidate') {
+    renderCandidatePath(container);
+  }
+}
+
+function startFlowPath(path) {
+  flowPath = path;
+  flowStep = 1;
+  renderFlowchart();
+}
+
+function resetFlow() {
+  flowPath = 'none';
+  flowStep = 0;
+  renderFlowchart();
+}
+
+function renderVoterPath(container) {
+  const steps = [
+    { title: "Check Eligibility", icon: "🧐", modal: 10, detail: "Are you 18? Indian citizen? Check here." },
+    { title: "Register to Vote", icon: "📝", modal: 11, detail: "Fill Form 6 on the ECI portal." },
+    { title: "Find Polling Booth", icon: "📍", modal: 12, detail: "Check your voter slip or portal." },
+    { title: "Cast Your Vote", icon: "🗳️", modal: 8, detail: "Visit the booth and use the EVM." }
+  ];
+
+  let html = `
+    <button class="btn-secondary" onclick="resetFlow()" style="margin-bottom:2.5rem; padding: 0.6rem 1.2rem; font-size: 0.95rem; border-radius: 50px;">← Back to Start</button>
+    <div class="flow-branch"><h3>Voter's Journey</h3></div>
   `;
+
+  for (let i = 0; i < flowStep; i++) {
+    const s = steps[i];
+    html += `
+      <div class="flow-node highlight" onclick="openModal(${s.modal})">
+        <div class="flow-icon">${s.icon}</div>
+        <div class="flow-title">${s.title}</div>
+        <p>${s.detail}</p>
+      </div>
+      <div class="flow-vertical-line"></div>
+    `;
+  }
+
+  if (flowStep < steps.length) {
+    html += `<button class="btn-primary" onclick="flowStep++; renderFlowchart()" style="margin-top:1rem;">Next Step: ${steps[flowStep].title}</button>`;
+  } else {
+    html += `
+      <div class="flow-node" onclick="navigateTo('section-home')">
+        <div class="flow-icon">🇮🇳</div>
+        <div class="flow-title">Jai Hind!</div>
+        <p>You've completed the process. Go vote with confidence!</p>
+      </div>
+    `;
+  }
+  container.innerHTML = html;
+}
+
+function renderCandidatePath(container) {
+  const steps = [
+    { title: "Eligibility to Contest", icon: "⚖️", modal: 13, detail: "Must be 25+ and a registered voter." },
+    { title: "File Nomination", icon: "📁", modal: 14, detail: "Submit papers to the Returning Officer." },
+    { title: "Campaigning", icon: "📢", modal: 6, detail: "Follow the Model Code of Conduct." },
+    { title: "Election Results", icon: "🏆", modal: 9, detail: "Counting of votes and declaration." }
+
+  ];
+
+  let html = `
+    <button class="btn-secondary" onclick="resetFlow()" style="margin-bottom:2.5rem; padding: 0.6rem 1.2rem; font-size: 0.95rem; border-radius: 50px;">← Back to Start</button>
+    <div class="flow-branch"><h3>Candidate's Journey</h3></div>
+  `;
+
+  for (let i = 0; i < flowStep; i++) {
+    const s = steps[i];
+    html += `
+      <div class="flow-node highlight" onclick="openModal(${s.modal})">
+        <div class="flow-icon">${s.icon}</div>
+        <div class="flow-title">${s.title}</div>
+        <p>${s.detail}</p>
+      </div>
+      <div class="flow-vertical-line"></div>
+    `;
+  }
+
+  if (flowStep < steps.length) {
+    html += `<button class="btn-primary" onclick="flowStep++; renderFlowchart()" style="margin-top:1rem;">Next Step: ${steps[flowStep].title}</button>`;
+  } else {
+    html += `
+      <div class="flow-node" onclick="navigateTo('section-home')">
+        <div class="flow-icon">🇮🇳</div>
+        <div class="flow-title">Done!</div>
+        <p>Process complete. Good luck with your campaign!</p>
+      </div>
+    `;
+  }
   container.innerHTML = html;
 }
 
@@ -125,7 +177,8 @@ function openModal(index) {
   simpleTermsOpen = false;
 
   document.getElementById('modal-icon').textContent = item.icon;
-  document.getElementById('modal-step-num').textContent = `Phase ${index + 1} of 10`;
+  document.getElementById('modal-step-num').textContent = `Phase ${index + 1} of ${timelineData.length}`;
+
   document.getElementById('modal-title').textContent = item.title;
   document.getElementById('panel-detail').innerHTML = item.detail;
   document.getElementById('panel-why').innerHTML = item.why;
@@ -134,6 +187,18 @@ function openModal(index) {
   document.getElementById('modal-simple-body').innerHTML = item.simple;
   document.getElementById('modal-simple-body').style.display = 'none';
   document.getElementById('simple-btn').textContent = '🧒 Explain in Simple Terms';
+
+  // Render useful links
+  const linksContainer = document.getElementById('panel-links');
+  if (linksContainer) {
+    if (item.links && item.links.length > 0) {
+      linksContainer.innerHTML = item.links.map(l =>
+        `<a href="${l.url}" target="_blank" rel="noopener" class="modal-link-chip">🔗 ${l.label}</a>`
+      ).join('');
+    } else {
+      linksContainer.innerHTML = '<p style="opacity:0.5">No links available for this phase.</p>';
+    }
+  }
 
   // Reset tabs
   document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
@@ -270,8 +335,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* Journey Mode removed */
-
 /* ══════════════════════════════════════
    GOOGLE TRANSLATE
 ══════════════════════════════════════ */
@@ -279,13 +342,11 @@ function doTranslate(lang) {
   if (!lang || lang === '') return;
   localStorage.setItem('cs_lang', lang);
 
-  // Try programmatic trigger first
   const triggerTranslate = () => {
     const select = document.querySelector('.goog-te-combo');
     if (select) {
       select.value = lang;
       select.dispatchEvent(new Event('change'));
-      // Update our dropdown to match
       document.getElementById('lang-select').value = lang;
       return true;
     }
@@ -293,7 +354,6 @@ function doTranslate(lang) {
   };
 
   if (!triggerTranslate()) {
-    // GT not loaded yet — wait and retry
     setTimeout(() => triggerTranslate(), 1200);
   }
 }
@@ -303,50 +363,34 @@ function restoreLanguagePreference() {
   const select = document.getElementById('lang-select');
   if (saved && saved !== 'en' && select) {
     select.value = saved;
-    // Delay to allow GT widget to initialise
     setTimeout(() => doTranslate(saved), 2000);
   }
 }
 
 /* ══════════════════════════════════════
-   FLOATING AI CHATBOT
+   FLOATING AI CHATBOT & API KEY
 ══════════════════════════════════════ */
 let chatbotOpen = false;
 let voiceRecognition = null;
 let isRecording = false;
 
+/**
+ * Toggles the chatbot window visibility.
+ */
 function toggleChatbot() {
   chatbotOpen = !chatbotOpen;
   const win = document.getElementById('chatbot-window');
-  const fabIcon = document.getElementById('chatbot-fab-icon');
+  if (!win) return;
   if (chatbotOpen) {
     win.classList.add('active');
-    fabIcon.textContent = '✕';
     document.getElementById('chatbot-input').focus();
   } else {
     win.classList.remove('active');
-    fabIcon.textContent = '💬';
-    // Stop voice if recording
     if (isRecording && voiceRecognition) {
       voiceRecognition.stop();
       isRecording = false;
-      document.getElementById('chatbot-voice-btn').classList.remove('recording');
     }
   }
-}
-
-function addChatMsg(text, sender) {
-  const container = document.getElementById('chatbot-messages');
-  const avatar = sender === 'bot' ? 'Bot' : 'User';
-  const div = document.createElement('div');
-  div.className = `chatbot-msg ${sender}`;
-  div.innerHTML = `
-    <span class="chatbot-msg-avatar">${avatar}</span>
-    <div class="chatbot-msg-bubble">${text}</div>
-  `;
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-  return div;
 }
 
 async function sendChatbotMsg() {
@@ -354,81 +398,130 @@ async function sendChatbotMsg() {
   const text = input.value.trim();
   if (!text) return;
 
-  // Show user message
-  addChatMsg(text, 'user');
+  const container = document.getElementById('chatbot-messages');
+  const userDiv = document.createElement('div');
+  userDiv.className = 'chatbot-msg user';
+  userDiv.innerHTML = `<div class="chatbot-msg-bubble">${text}</div>`;
+  container.appendChild(userDiv);
   input.value = '';
 
-  // Show typing indicator
-  const typingDiv = addChatMsg('Thinking...', 'bot');
-  typingDiv.querySelector('.chatbot-msg-bubble').classList.add('typing');
+  const botDiv = document.createElement('div');
+  botDiv.className = 'chatbot-msg bot';
+  botDiv.innerHTML = `<span class="chatbot-msg-avatar" style="font-size:1.8rem; line-height:1; display:flex; align-items:flex-end; padding-bottom:0.5rem;">🤖</span><div class="chatbot-msg-bubble typing">Thinking...</div>`;
+  container.appendChild(botDiv);
+  container.scrollTop = container.scrollHeight;
 
-  // Call Gemini
   const reply = await askGemini(text);
-
-  // Replace typing with actual response
-  typingDiv.querySelector('.chatbot-msg-bubble').classList.remove('typing');
-  typingDiv.querySelector('.chatbot-msg-bubble').innerHTML = formatBotReply(reply);
-  document.getElementById('chatbot-messages').scrollTop = document.getElementById('chatbot-messages').scrollHeight;
+  botDiv.querySelector('.chatbot-msg-bubble').classList.remove('typing');
+  botDiv.querySelector('.chatbot-msg-bubble').innerHTML = reply.replace(/\n/g, '<br>');
+  container.scrollTop = container.scrollHeight;
 }
 
-function formatBotReply(text) {
-  // Basic markdown-like formatting
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/\n/g, '<br>');
-}
-
+/* ══════════════════════════════════════
+   VOICE INPUT (SPEECH RECOGNITION)
+══════════════════════════════════════ */
 function toggleVoiceInput() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    alert('Voice input is not supported in this browser. Please use Chrome or Edge.');
-    return;
-  }
-
   const btn = document.getElementById('chatbot-voice-btn');
+  const input = document.getElementById('chatbot-input');
 
-  if (isRecording && voiceRecognition) {
-    voiceRecognition.stop();
-    isRecording = false;
-    btn.classList.remove('recording');
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert("Speech recognition is not supported in your browser.");
     return;
   }
 
-  voiceRecognition = new SpeechRecognition();
-  voiceRecognition.lang = 'hi-IN'; // Default Hindi, falls back to English
-  voiceRecognition.interimResults = false;
-  voiceRecognition.maxAlternatives = 1;
-  // Also accept English
-  voiceRecognition.lang = navigator.language || 'en-IN';
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  
+  if (!voiceRecognition) {
+    voiceRecognition = new SpeechRecognition();
+    voiceRecognition.continuous = false;
+    voiceRecognition.interimResults = false;
+    voiceRecognition.lang = 'en-IN'; // Supports English (India) and Hindi
 
-  isRecording = true;
-  btn.classList.add('recording');
+    voiceRecognition.onstart = () => {
+      isRecording = true;
+      btn.innerHTML = '🛑';
+      btn.classList.add('recording');
+      input.placeholder = "Listening...";
+    };
 
-  voiceRecognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    document.getElementById('chatbot-input').value = transcript;
+    voiceRecognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      input.value = transcript;
+      sendChatbotMsg(); // Auto-send
+    };
+
+    voiceRecognition.onerror = (event) => {
+      console.error("Speech Error:", event.error);
+      stopRecording();
+    };
+
+    voiceRecognition.onend = () => {
+      stopRecording();
+    };
+  }
+
+  if (isRecording) {
+    voiceRecognition.stop();
+  } else {
+    voiceRecognition.start();
+  }
+
+  function stopRecording() {
     isRecording = false;
+    btn.innerHTML = '🎙️';
     btn.classList.remove('recording');
-    // Auto-send after voice input
-    sendChatbotMsg();
-  };
+    input.placeholder = "Ask about elections...";
+  }
+}
 
-  voiceRecognition.onerror = (event) => {
-    console.error('Voice error:', event.error);
-    isRecording = false;
-    btn.classList.remove('recording');
-    if (event.error === 'not-allowed') {
-      alert('Microphone access denied. Please allow microphone permission.');
-    }
-  };
 
-  voiceRecognition.onend = () => {
-    isRecording = false;
-    btn.classList.remove('recording');
-  };
+/* ══════════════════════════════════════
+   DRAGGABLE CHATBOT
+   Allows user to drag the chatbot window
+══════════════════════════════════════ */
+function makeDraggable(el, handle) {
+  let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  
+  handle.onmousedown = dragMouseDown;
 
-  voiceRecognition.start();
+  function dragMouseDown(e) {
+    e.preventDefault();
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+    el.classList.add('dragging');
+  }
+
+  function elementDrag(e) {
+    e.preventDefault();
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    
+    // Set new position
+    let newTop = el.offsetTop - pos2;
+    let newLeft = el.offsetLeft - pos1;
+
+    // Boundary checks
+    const pad = 20;
+    if (newTop < pad) newTop = pad;
+    if (newLeft < pad) newLeft = pad;
+    if (newTop + el.offsetHeight > window.innerHeight - pad) newTop = window.innerHeight - el.offsetHeight - pad;
+    if (newLeft + el.offsetWidth > window.innerWidth - pad) newLeft = window.innerWidth - el.offsetWidth - pad;
+
+    el.style.top = newTop + "px";
+    el.style.left = newLeft + "px";
+    el.style.bottom = 'auto';
+    el.style.right = 'auto';
+  }
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+    el.classList.remove('dragging');
+  }
 }
 
 /* ══════════════════════════════════════
@@ -439,4 +532,10 @@ function toggleVoiceInput() {
   renderChatQuestions();
   navigateTo('section-home');
   restoreLanguagePreference();
+
+  const chatWin = document.getElementById('chatbot-window');
+  const chatHeader = chatWin.querySelector('.chatbot-header');
+  if (chatWin && chatHeader) {
+    makeDraggable(chatWin, chatHeader);
+  }
 })();
